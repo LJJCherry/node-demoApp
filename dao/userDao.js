@@ -21,6 +21,7 @@ var jsonWrite = function (res, ret) {
 module.exports = {
   add: function (req, res, next) {
     pool.getConnection(function(err, connection) {
+      if(err) throw err;
       var param = req.query || req.params ;
 
       connection.query(sql.insert, [param.name, param.age], function(err, result){
@@ -61,7 +62,7 @@ module.exports = {
       return;
     }
     pool.getConnection(function(err, connection) {
-      connection.query(sql.update, [param,name, param.age, number(param.id)],function(err, result) {
+      connection.query(sql.update, [param.name, param.age, Number(param.id)],function(err, result) {
         if(result.affectedRows > 0) {
           res.render('suc', {
             result: result
